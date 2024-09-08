@@ -1,0 +1,17 @@
+server:
+  port: 8001
+
+spring:
+  application:
+    name: library
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/testdb_cache?useSSL=false
+    username: root
+    password: Sujith@1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
