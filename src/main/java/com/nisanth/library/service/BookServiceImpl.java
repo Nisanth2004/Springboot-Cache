@@ -10,44 +10,49 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class BookServiceImpl implements BookService{
+public class BookServiceImpl implements BookService {
 
     private static final Logger logger = LoggerFactory.getLogger(BookServiceImpl.class);
-
     private final BookRepository bookRepository;
+
     @Override
     public Book addBook(Book book) {
-        logger.info("adding book with id - {}", book.getId());
+        logger.info("Adding book with id - {}", book.getId());
         return bookRepository.save(book);
     }
 
     @Override
-    @CachePut(cacheNames = "books", key="#book.id")
+    @CachePut(cacheNames = "books", key = "#book.id")
     public Book updateBook(Book book) {
+        logger.info("Updating book with id - {}", book.getId());
         bookRepository.updateAddress(book.getId(), book.getName());
-        logger.info("book updated with new name");
         return book;
     }
 
     @Override
-    @Cacheable(cacheNames = "books", key="#id")
+    @Cacheable(cacheNames = "books", key = "#id")
     public Book getBook(long id) {
-        logger.info("fetching book from db");
+        logger.info("Fetching book from DB for id - {}", id);
         Optional<Book> book = bookRepository.findById(id);
-        if (book.isPresent()) {
-            return book.get();
-        } else {
-            return new Book();
-        }
+        return book.orElse(null);
     }
+
     @Override
     @CacheEvict(cacheNames = "books", key = "#id")
     public String deleteBook(long id) {
+        logger.info("Deleting book with id - {}", id);
         bookRepository.deleteById(id);
-        return "Book deleted";
+        return "Book deleted successfully";
+    }
+
+    @Cacheable(cacheNames = "books")
+    public List<Book> getAllBooks() {
+        logger.info("Fetching all books from DB");
+        return bookRepository.findAll();
     }
 }
