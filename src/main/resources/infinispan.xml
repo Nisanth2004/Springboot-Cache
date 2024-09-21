@@ -1,0 +1,9 @@
+<infinispan>
+    <cache-container>
+        <local-cache name="books">
+            <memory>
+                <size>1000</size> <!-- Set the max size -->
+            </memory>
+        </local-cache>
+    </cache-container>
+</infinispan>

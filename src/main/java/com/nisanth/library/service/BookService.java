@@ -2,6 +2,8 @@ package com.nisanth.library.service;
 
 import com.nisanth.library.entity.Book;
 
+import java.util.List;
+
 public interface BookService {
 
     Book addBook(Book book);
@@ -11,4 +13,6 @@ public interface BookService {
     Book getBook(long id);
 
     String deleteBook(long id);
+
+    List<Book> getAllBooks();
 }

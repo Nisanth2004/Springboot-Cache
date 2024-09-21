@@ -6,12 +6,32 @@ spring:
     name: library
 
   datasource:
-    url: jdbc:mysql://localhost:3306/testdb_cache?useSSL=false
+    url: jdbc:mysql://localhost:3306/testdb_cache?useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: Sujith@1234
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  cache:
+    type: infinispan
+
+  main:
+    allow-bean-definition-overriding: true
+
+infinispan:
+  embedded:
+    reactive: true
+    marshalling:
+      version: '4' # Added the marshalling version
+
+  cache:
+    infinispan:
+      config: infinispan.xml
+    cache-names: books
